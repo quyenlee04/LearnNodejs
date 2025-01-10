@@ -76,6 +76,12 @@ app.post('/user', (req, res) => {
 console.log(req.query);
 res.send('get user');
 });
+
+app.get('books/:bookId', (req, res) => {
+    console.log(req.params);
+    const bookId = req.params.bookId;
+    res.send(`Book ID: ${bookId}`);
+});
 app.listen(port, () => { 
 console.log(`Server listening on port ${port}`) 
 });

@@ -6,9 +6,14 @@ const multer = require('multer');
 const { title } = require('process');
 
 const app = express(); 
-const port = 3000; 
+const port = 3000;
+const qrcodeRouter = require('./qrcode');
+const todosRouter = require('./todo');
+
+
+
 // Middleware cho static files (CSS, JS, hình ảnh) 
-app.use(express.static(path.join('public'))); 
+app.use(express.static(path.join(__dirname,'public'))); 
 // Cấu hình view engine là Pug 
 app.set('view engine', 'pug'); 
 app.set('views', path.join(__dirname, 'views')); 
@@ -16,10 +21,15 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.json());
+
+app.use('/qrcode', qrcodeRouter);
+app.use('/todo', todosRouter);
 
 app.get('/', (req, res) => { 
 res.render('index', { title: 'Hey', message: 'Xin chao cac bạn Truong Dai hoc Gia Dinh' }) 
-}); 
+});
+
 
 app.get('/login', (req, res) => { 
     res.render(`login`) ;
@@ -77,7 +87,7 @@ console.log(req.query);
 res.send('get user');
 });
 
-app.get('books/:bookId', (req, res) => {
+app.get('/books/:bookId', (req, res) => {
     console.log(req.params);
     const bookId = req.params.bookId;
     res.send(`Book ID: ${bookId}`);
